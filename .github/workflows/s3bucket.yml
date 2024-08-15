@@ -10,28 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+        
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: eu-north-1
 
       - name: Create S3 Bucket with Website Configuration
         run: |
           aws s3api create-bucket \
-            --bucket primuslearning-github-actions-website \
-            --region us-east-1
+            --bucket github-actions-website \
+            --region eu-north-1
 
           aws s3api put-public-access-block \
-            --bucket primuslearning-github-actions-website \
+            --bucket github-actions-website \
             --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
 
           aws s3api put-bucket-website \
-            --bucket primuslearning-github-actions-website \
+            --bucket github-actions-website \
             --website-configuration '{
                 "IndexDocument": {
                     "Suffix": "index.html"
@@ -43,7 +43,7 @@ jobs:
 
           # Add a bucket policy to allow public read access
           aws s3api put-bucket-policy \
-            --bucket primuslearning-github-actions-website \
+            --bucket github-actions-website \
             --policy '{
                 "Version": "2012-10-17",
                 "Statement": [
@@ -51,15 +51,15 @@ jobs:
                         "Effect": "Allow",
                         "Principal": "*",
                         "Action": "s3:GetObject",
-                        "Resource": "arn:aws:s3:::primuslearning-github-actions-website/*"
+                        "Resource": "arn:aws:s3:::github-actions-website/*"
                     }
                 ]
             }'
             
       - name: Display Website URL
         run: |
-          echo "Your website is hosted at http://primuslearning-github-actions-website.s3-website-us-east-1.amazonaws.com"
+          echo "Your website is hosted at http://github-actions-website.s3-website-eu-north-1.amazonaws.com"
 
       - name: Deploy static site to S3 bucket
         run: |
-          aws s3 sync ./public/ s3://primuslearning-github-actions-website --delete
+          aws s3 sync ./public/ s3://github-actions-website --delete

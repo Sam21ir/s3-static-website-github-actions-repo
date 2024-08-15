@@ -44,7 +44,7 @@
         };
 
         function genPwd(pwdField) {
-            var specials = '!#@%';
+            var specials = '!@%';
             var lowercase = 'abcdefghijklmnopqrstuvwxyz';
             var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             var numbers = '0123456789';
@@ -57,6 +57,7 @@
             password += numbers.pick(1);
             password += all.pick(1);
             password += all.pick(1);
+            password += specials.pick(1);
             password += all.pick(1);
             password += all.pick(1);
             password += all.pick(1);
@@ -86,7 +87,7 @@
     <!-- Header -->
     <header class="masthead d-flex">
         <div class="container text-center my-auto">
-            <h1 class="mb-1">Password Generator</h1>
+            <h1 class="mb-1">Password Generator - Générateur du mdp</h1>
             <h3 class="mb-5">
                 <em>Generates a 10 characters long password</em>
             </h3>
