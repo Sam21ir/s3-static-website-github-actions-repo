@@ -25,6 +25,7 @@ jobs:
           aws s3api create-bucket \
             --bucket github-actions-website \
             --region eu-north-1
+            --create-bucket-configuration LocationConstraint=eu-north-1
 
           aws s3api put-public-access-block \
             --bucket github-actions-website \
